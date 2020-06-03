@@ -16,17 +16,29 @@ namespace SchotteTest_Infrastructure
         }
 
         public Game LoadGame()
-        {      
-            CurrentGame.Name = "This new game";
-            Console.WriteLine ($"Welcome to {CurrentGame.Name}");
-            Console.WriteLine("This is the game you will winn or loose. It´s all depends on change! ");
-            Console.WriteLine("Take a guess at a number and good luck! ");
-            Console.WriteLine("Min value for conquest: ");
-            var minValue = Console.ReadLine();
-            Console.WriteLine("Max value for conquest: "); //TODO USe split to read both i same readline
-            var maxValue = Console.ReadLine();
+        {
+            string maxvalue = "";
+            string minvalue = ""; 
+            Console.WriteLine("What's the games name? : ");
+            CurrentGame.Name = Console.ReadLine();          
 
-            CurrentGame.SecretNumber = GetRandomNumber(minValue, maxValue); 
+            Console.WriteLine("Set min and max values for the random value (use a ',' between min and max value) ");
+            var values = Console.ReadLine().Split(',');
+            if(int.Parse(values[0]) < int.Parse(values[1]))
+            {
+                minvalue = values[0]; 
+                maxvalue = values[1];
+            }
+            else
+            {
+                minvalue = values[1];
+                maxvalue = values[0];
+            }
+    
+            CurrentGame.SecretNumber = GetRandomNumber(minvalue, maxvalue);
+
+            Console.WriteLine("How many attemps will the players have? : ");
+            CurrentGame.NumberOfGuesses = int.Parse(Console.ReadLine()); 
             return CurrentGame; 
            
         }
@@ -69,7 +81,7 @@ namespace SchotteTest_Infrastructure
         {
             Random rnd = new Random();
             int secretNumber = rnd.Next(int.Parse(min), int.Parse(max)); // creates a number between min and max
-
+       
             return secretNumber;
         }
     }

@@ -8,5 +8,7 @@ namespace ScotteTest_Domain
     {
         public string Id { get; set; }
         public string Name { get; set; }
+
+        public List<int> PlayersGuesses { get; set; }
     }
 }

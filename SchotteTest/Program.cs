@@ -18,11 +18,15 @@ namespace SchotteTest
 
 
             var game = serviceProvider.GetService<IGame>();
-
+            Console.WriteLine("Hello! Start with some settings for the game:"); 
             game.LoadGame();
+            Console.WriteLine("**********************************************************************");
+            Console.WriteLine(""); 
 
-
-            // Console.WriteLine(current.Name);
+            Console.WriteLine($"Welcome to {game.CurrentGame.Name.ToUpper()}");
+            Console.WriteLine("This is the game you will winn or loose. It´s all depends on change! ");
+            Console.WriteLine("Take a guess at a number and good luck! ");
+         
 
             game.StartGame();
 
