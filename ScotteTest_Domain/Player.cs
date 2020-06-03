@@ -15,6 +15,9 @@ namespace ScotteTest_Domain
 
         public bool IsAWinner { get; set; }
 
+        public int ClosestNumber { get; set; }
+
+        public int Diff { get; set; }
         public List<int> PlayersGuesses { get; set; }
     }
 }

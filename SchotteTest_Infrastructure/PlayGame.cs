@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using SchotteTest_Application;
 using ScotteTest_Domain;
@@ -20,8 +22,13 @@ namespace SchotteTest_Infrastructure
             string maxvalue = "";
             string minvalue = ""; 
             Console.WriteLine("What's the games name? : ");
-            CurrentGame.Name = Console.ReadLine();          
-
+            CurrentGame.Name = Console.ReadLine();
+            if (string.IsNullOrEmpty(CurrentGame.Name))
+            {
+                Console.WriteLine("Name can't be empty! Input your name once more");
+                CurrentGame.Name = Console.ReadLine();
+            }
+         
             Console.WriteLine("Set min and max values for the random value (use a ',' between min and max value) ");
             var values = Console.ReadLine().Split(',');
             if(int.Parse(values[0]) < int.Parse(values[1]))
@@ -38,7 +45,14 @@ namespace SchotteTest_Infrastructure
             CurrentGame.SecretNumber = GetRandomNumber(minvalue, maxvalue);
 
             Console.WriteLine("How many attemps will the players have? : ");
-            CurrentGame.NumberOfGuesses = int.Parse(Console.ReadLine()); 
+            //CurrentGame.NumberOfGuesses = int.Parse(Console.ReadLine());
+            int amountOfGuesses;
+            while (!int.TryParse(Console.ReadLine(), out amountOfGuesses))
+            {
+                Console.WriteLine("Please Enter a valid numerical value!");
+         
+            }
+            CurrentGame.NumberOfGuesses = amountOfGuesses;
             return CurrentGame; 
            
         }
@@ -80,10 +94,17 @@ namespace SchotteTest_Infrastructure
             {
                 while (counter < CurrentGame.NumberOfGuesses)
                 {
+                    Console.WriteLine("Round: " + (counter +1));
                     foreach (var player in CurrentGame.CurrentPlayers)
                     {
-                        Console.WriteLine("Guess your number: ");
-                        var guess = int.Parse(Console.ReadLine());
+                        Console.WriteLine($"{player.Name.ToUpper()} guess your number: ");
+               
+                        int guess; 
+                        while (!int.TryParse(Console.ReadLine(), out guess))
+                        {
+                            Console.WriteLine("Please Enter a valid numerical value!");
+
+                        }
                         player.PlayersGuesses.Add(guess);
                         if (guess == CurrentGame.SecretNumber)
                         {
@@ -95,6 +116,7 @@ namespace SchotteTest_Infrastructure
                     }
                     counter++;
                 }
+                guessANumber = false; 
             } while (guessANumber);
      
         }
@@ -107,9 +129,28 @@ namespace SchotteTest_Infrastructure
             return secretNumber;
         }
 
-        public void Conclusion()
+        public Player Conclusion()
         {
-            throw new NotImplementedException();
+            foreach(var player in CurrentGame.CurrentPlayers)
+            {
+                player.ClosestNumber = player.PlayersGuesses.OrderBy(item => Math.Abs(CurrentGame.SecretNumber - item)).First();
+            }
+            int currentNearest = CurrentGame.CurrentPlayers[0].ClosestNumber;
+            int currentDifference = Math.Abs(currentNearest - CurrentGame.SecretNumber);
+          
+            for (int i = 1; i < CurrentGame.CurrentPlayers.Count; i++)
+            {
+                int diff = Math.Abs(CurrentGame.CurrentPlayers[i].ClosestNumber - CurrentGame.SecretNumber);
+                if (diff < currentDifference)
+                {
+                    currentDifference = diff;
+                    currentNearest = CurrentGame.CurrentPlayers[i].ClosestNumber;
+                    CurrentGame.CurrentPlayers[i].Diff = currentDifference; 
+              
+                }
+            }
+            var winner = CurrentGame.CurrentPlayers.Where(p => p.PlayersGuesses.Contains(currentNearest)).FirstOrDefault(); 
+            return winner; 
         }
     }
 }

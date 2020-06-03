@@ -38,8 +38,13 @@ namespace SchotteTest
             }
             else
             {
-                Console.WriteLine("No obviuos winner"); 
+                Console.WriteLine("No obviuos winner");
+                Console.WriteLine("Let me check.....");
+                var closestWinner = game.Conclusion();
+                Console.WriteLine("The winner with the closest number is:  {0} with the number {1}", closestWinner.Name, closestWinner.ClosestNumber);
             }
+
+           
         }
     }
 }
