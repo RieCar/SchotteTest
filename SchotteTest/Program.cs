@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using SchotteTest_Application;
 using SchotteTest_Infrastructure;
@@ -27,9 +28,18 @@ namespace SchotteTest
             Console.WriteLine("This is the game you will winn or loose. It´s all depends on change! ");
             Console.WriteLine("Take a guess at a number and good luck! ");
          
-
             game.StartGame();
 
+            game.Validate();
+            var winner = game.CurrentGame.CurrentPlayers.Where(p => p.IsAWinner == true).FirstOrDefault();
+            if (winner != null)
+            {
+                Console.WriteLine($"Congrats  {winner.Name.ToUpper()} you guessed the correct number"); 
+            }
+            else
+            {
+                Console.WriteLine("No obviuos winner"); 
+            }
         }
     }
 }

@@ -13,7 +13,9 @@ namespace SchotteTest_Application
  
         Game LoadGame(); 
         void StartGame();
-        void Validate(); 
+        void Validate();
+
+        void Conclusion(); 
 
     }
 }

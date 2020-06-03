@@ -74,15 +74,42 @@ namespace SchotteTest_Infrastructure
 
         public void Validate()
         {
-            throw new NotImplementedException();
+            var guessANumber = true; 
+            var counter = 0;
+            do
+            {
+                while (counter < CurrentGame.NumberOfGuesses)
+                {
+                    foreach (var player in CurrentGame.CurrentPlayers)
+                    {
+                        Console.WriteLine("Guess your number: ");
+                        var guess = int.Parse(Console.ReadLine());
+                        player.PlayersGuesses.Add(guess);
+                        if (guess == CurrentGame.SecretNumber)
+                        {
+                            guessANumber = false;
+                            player.IsAWinner = true; 
+                            counter = CurrentGame.NumberOfGuesses; 
+                            break; 
+                        }
+                    }
+                    counter++;
+                }
+            } while (guessANumber);
+     
         }
 
         private int GetRandomNumber(string min, string max)
         {
             Random rnd = new Random();
             int secretNumber = rnd.Next(int.Parse(min), int.Parse(max)); // creates a number between min and max
-       
+            Console.WriteLine("secret " + secretNumber);
             return secretNumber;
+        }
+
+        public void Conclusion()
+        {
+            throw new NotImplementedException();
         }
     }
 }
