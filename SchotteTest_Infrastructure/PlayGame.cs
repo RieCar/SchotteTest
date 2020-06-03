@@ -82,8 +82,7 @@ namespace SchotteTest_Infrastructure
                     Console.Write($" {CurrentGame.CurrentPlayers[i].Name} vs ");
                 }                            
             }
-            Console.WriteLine("");
-            Console.WriteLine("Let´s go!");
+          
         }
 
         public void Validate()

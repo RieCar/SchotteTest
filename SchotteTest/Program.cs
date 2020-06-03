@@ -29,6 +29,8 @@ namespace SchotteTest
             Console.WriteLine("Take a guess at a number and good luck! ");
          
             game.StartGame();
+            Console.WriteLine("");
+            Console.WriteLine("Let´s go!");
 
             game.Validate();
             var winner = game.CurrentGame.CurrentPlayers.Where(p => p.IsAWinner == true).FirstOrDefault();
