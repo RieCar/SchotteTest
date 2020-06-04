@@ -15,7 +15,7 @@ namespace SchotteTest_Application
         void StartGame();
         void Validate();
 
-        Player Conclusion(); 
+        List<Player> Conclusion(); 
 
     }
 }
